@@ -40,6 +40,44 @@ public class UserRepository {
         return null;
     }
     // transfer money to another user
+    public boolean transfer(String fromUsername, String toUsername, int transferCost){
+        PreparedStatement st = null;
+        Connection con = null;
+        try {
+            int checker = 0;
+            con = PostgresDB.getInstance().getConnection();
 
+            String sql ="select account from user_info where username = '"+fromUsername+"'";
+
+            st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            if(rs.next()){
+                checker = rs.getInt("account");
+            }
+            if((checker - transferCost) < 0){
+                return false;
+            }else {
+                sql = "update user_info set account = account - "+transferCost+" where username = '"+fromUsername+ "'";
+                st = con.prepareStatement(sql);
+                st.execute();
+
+                sql = "update user_info set account = account + "+transferCost+" where username = '"+toUsername+ "'";
+                st = con.prepareStatement(sql);
+                st.execute();
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                con.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
+    }
     // change password and updates methods defined in 'Updates' class;
 }
