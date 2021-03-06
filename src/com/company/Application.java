@@ -103,6 +103,7 @@ public class Application {
                     case 2 -> {
                         System.out.println("Please,enter the new surname,that you want to update");
                         String newUserSurname = scanner.next();
+                        if(!areLetters(newUserSurname))
                         if (updates.updateSurname(newUserSurname, userInfoCheck.getUsername()))
                             System.out.println("Successfully updated!");
                         else System.err.println("Failed!");
@@ -202,8 +203,8 @@ public class Application {
                 "Contact details:'" + user.getContact_number() + "' || " +
                 "Balance:'" + user.getAccount() + "'");
     }
-    protected boolean areLetters(String a,String b){
-        return a.matches("^[a-zA-Z]*$") &&b.matches("^[a-zA-Z]*$");
+    protected boolean areLetters(String a){
+        return a.matches("^[a-zA-Z]*$");
     }
 }
 /// Меня тут не может быть дохуя
