@@ -61,4 +61,17 @@ public class Owner {
     public void setAge(int age) {
         this.age = age;
     }
+
+    @Override
+    public String toString() {
+        return "Owner{" +
+                "name = '" + name + '\'' +
+                ", surname = '" + surname + '\'' +
+                ", username = '" + username + '\'' +
+                ", password = '" + password + '\'' +
+                ", address = '" + address + '\'' +
+                ", salary = " + salary +
+                ", age = " + age +
+                '}';
+    }
 }
