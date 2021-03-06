@@ -13,7 +13,7 @@ public class UserInfoCheck implements IUserInfoCheck {
     PostgresDB db;
     int i = 0;
     boolean owner = false;
-
+    String username;
 
     public void checkInfo(){
         System.out.println("Please,enter your login,but keep in mind that if you are new user for our bank,your account will be created automatically:");
