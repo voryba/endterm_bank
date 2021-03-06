@@ -1,9 +1,13 @@
 package com.company;
 
+import com.company.repositories.OwnerRepository;
 import com.company.repositories.UserInfoCheck;
 
-public class Main {
-    public static void main(String[] args) {
+import java.sql.SQLException;
 
+public class Main {
+    public static void main(String[] args) throws SQLException {
+        OwnerRepository repo = new OwnerRepository();
+        repo.updateSurname("Yerkasd","asdasd");
     }
 }
