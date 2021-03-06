@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.data.PostgresDB;
+import com.company.entities.User;
 import com.company.exception.WrongInputException;
 import com.company.repositories.OwnerRepository;
 
