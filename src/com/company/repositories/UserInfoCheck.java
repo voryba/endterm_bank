@@ -1,7 +1,6 @@
 package com.company.repositories;
 
 import com.company.data.PostgresDB;
-import com.company.exception.WrongInputException;
 import com.company.repositories.interfaces.IUserInfoCheck;
 
 import java.sql.*;
@@ -12,8 +11,11 @@ public class UserInfoCheck implements IUserInfoCheck {
     Statement statement;
     ResultSet result;
     PostgresDB db;
+    int i = 0;
+    boolean owner = false;
 
-    public void checkInfo() {
+
+    public void checkInfo(){
         System.out.println("Please,enter your login,but keep in mind that if you are new user for our bank,your account will be created automatically:");
         String username = scanner.nextLine();
         try {
