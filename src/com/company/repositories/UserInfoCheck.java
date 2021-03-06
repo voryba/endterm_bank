@@ -17,7 +17,7 @@ public class UserInfoCheck implements IUserInfoCheck {
 
     public void checkInfo(){
         System.out.println("Please,enter your login,but keep in mind that if you are new user for our bank,your account will be created automatically:");
-        String username = scanner.nextLine();
+        username = scanner.nextLine();
         try {
             if (!areLetters(username)) {
                 System.out.println("Input must contain only letters.Please,try again!");
@@ -94,6 +94,10 @@ public class UserInfoCheck implements IUserInfoCheck {
 
     protected boolean areLetters(String name){
         return name.matches("^[a-zA-Z]*$");
+    }
+
+    public String getUsername(){
+        return username;
     }
 }
 
