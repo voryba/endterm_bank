@@ -55,4 +55,16 @@ public class Transaction {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", account_change=" + account_change +
+                ", date=" + date +
+                '}';
+    }
 }

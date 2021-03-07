@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.data.PostgresDB;
+import com.company.entities.Transaction;
 import com.company.entities.User;
 import com.company.exception.WrongInputException;
 import com.company.repositories.OwnerRepository;
@@ -9,6 +10,7 @@ import com.company.repositories.UserInfoCheck;
 import com.company.repositories.UserRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
@@ -29,6 +31,10 @@ public class Application {
 
     Scanner scanner = new Scanner(System.in);
 
+    // Start
+    public void start(){
+        userInfoCheck.checkInfo();
+    }
 
     //Owner
     public void doActionOwner() {
@@ -41,7 +47,8 @@ public class Application {
                     Available options:
                     delete-1
                     update-2
-                    transaction-3
+                    request-3
+                    transaction-4
                     Exit-0""");
             choice = scanner.nextInt();
             try {
@@ -53,6 +60,9 @@ public class Application {
                         update();
                     }
                     case 3 -> {
+                        request();
+                    }
+                    case 4->{
                         transaction();
                     }
                     case 0 -> {
@@ -68,11 +78,14 @@ public class Application {
         }
     }
 
-    public void delete() {
-        System.out.println("Please,enter the name:");
+    public void delete() throws WrongInputException {
+        System.out.println("Please,enter the username:");
         String name = scanner.next();
-        if(ownerRepository.deleteUserByName(name)) System.out.println("Successfully deleted!");
-        else System.err.println("Failed!");
+        if (!areLetters(name)) throw new WrongInputException("Name must contain only letters!");
+        else {
+            if (ownerRepository.deleteUserByName(name)) System.out.println("Successfully deleted!");
+            else System.err.println("Failed!");
+        }
     }
 
 
@@ -96,16 +109,23 @@ public class Application {
                     case 1 -> {
                         System.out.println("Please,enter the new name:");
                         String newUserName = scanner.next();
-                        if (updates.updateName(newUserName, userInfoCheck.getUsername()))
-                            System.out.println("Successfully updated!");
-                        else System.err.println("Failed!");
+                        if (!areLetters(newUserName)) throw new WrongInputException("Name must contain only letters!");
+                        else {
+                            if (updates.updateName(newUserName, userInfoCheck.getUsername()))
+                                System.out.println("Successfully updated!");
+                            else System.err.println("Failed!");
+                        }
                     }
                     case 2 -> {
                         System.out.println("Please,enter the new surname,that you want to update");
                         String newUserSurname = scanner.next();
-                        if (updates.updateSurname(newUserSurname, userInfoCheck.getUsername()))
-                            System.out.println("Successfully updated!");
-                        else System.err.println("Failed!");
+                        if (!areLetters(newUserSurname))
+                            throw new WrongInputException("Name must contain only letters!");
+                        else {
+                            if (updates.updateSurname(newUserSurname, userInfoCheck.getUsername()))
+                                System.out.println("Successfully updated!");
+                            else System.err.println("Failed!");
+                        }
                     }
                     case 3 -> {
                         System.out.println("Please,enter the new contact,that you want to update");
@@ -144,10 +164,13 @@ public class Application {
     }
 
     public void transaction() {
-        if(ownerRepository.transactions())System.out.println("Transaction has been successfully ended!");
-        else System.err.println("Failed!");
+        List<Transaction> list = ownerRepository.transactions();
+        System.out.println("Last users transactions:");
+        System.out.println(list);
     }
-
+    public void request() {
+        System.out.println(ownerRepository.getAll());
+    }
 
     //USER
 
@@ -162,14 +185,14 @@ public class Application {
             System.out.println("""
                     Available options:
                     transaction-1
-                    -2
+                    update-2
                     balance-3
                     Exit-0""");
             choice = scanner.nextInt();
             try {
                 switch (choice) {
                     case 1 -> {
-
+                        transactionUser();
                     }
                     case 2 -> {
                         update();
@@ -202,8 +225,25 @@ public class Application {
                 "Contact details:'" + user.getContact_number() + "' || " +
                 "Balance:'" + user.getAccount() + "'");
     }
-    protected boolean areLetters(String a,String b){
-        return a.matches("^[a-zA-Z]*$") &&b.matches("^[a-zA-Z]*$");
+
+    public void transactionUser() throws WrongInputException {
+        //String fromUsername, String toUsername, int transferCost
+        System.out.println("Please, Enter the username you want to transfer money to:");
+        String toUser = scanner.next();
+        System.out.println("Please, enter the transfer cost:");
+        int transferCost = scanner.nextInt();
+        if (!are_letters(userInfoCheck.getUsername(), toUser)) throw new WrongInputException("Names must contain only letters!");
+        else {
+            userRepo.transfer(userInfoCheck.getUsername(), toUser, transferCost);
+            System.out.println("Transaction successfully completed!");
+        }
+    }
+
+    public boolean areLetters(String a) {
+        return a.matches("^[a-zA-Z]*$");
+    }
+
+    public boolean are_letters(String a, String b) {
+        return a.matches("^[a-zA-Z]*$") && b.matches("^[a-zA-Z]*$");
     }
 }
-/// Меня тут не может быть дохуя

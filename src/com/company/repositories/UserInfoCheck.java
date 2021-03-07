@@ -1,5 +1,6 @@
 package com.company.repositories;
 
+import com.company.Application;
 import com.company.data.PostgresDB;
 import com.company.repositories.interfaces.IUserInfoCheck;
 
@@ -13,8 +14,8 @@ public class UserInfoCheck implements IUserInfoCheck {
     PostgresDB db;
     int i = 0;
     boolean owner = false;
-    String username;
-
+    static String username;
+    Application app;
     public void checkInfo(){
         System.out.println("Please,enter your login,but keep in mind that if you are new user for our bank,your account will be created automatically:");
         username = scanner.nextLine();
@@ -35,7 +36,8 @@ public class UserInfoCheck implements IUserInfoCheck {
 
                     }
                     System.out.println("Welcome back `"+username+"`!");
-                    //////////////////////////////
+                    app = new Application();
+                    app.doActionUser();
                 }else if(!result.next()) {
                     owner = true;
                     result = statement.executeQuery("select * from owners_info where username = '" + username + "'");
@@ -47,7 +49,8 @@ public class UserInfoCheck implements IUserInfoCheck {
                             password = scanner.next();
                         }
                         System.out.println("Welcome back owner`"+username+"`!");
-                        ///////////////////////////////////////////
+                        app = new Application();
+                        app.doActionOwner();
                     }else {
                         PreparedStatement st = db.getConnection().prepareStatement("INSERT INTO user_info(name, surname, username, password, account, age, contact_number, address) " +
                                 "VALUES(?,?,?,?,?,?,?,?)");
