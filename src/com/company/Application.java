@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.data.PostgresDB;
+import com.company.entities.Transaction;
 import com.company.entities.User;
 import com.company.exception.WrongInputException;
 import com.company.repositories.OwnerRepository;
@@ -9,6 +10,7 @@ import com.company.repositories.UserInfoCheck;
 import com.company.repositories.UserRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
@@ -29,6 +31,10 @@ public class Application {
 
     Scanner scanner = new Scanner(System.in);
 
+    // Start
+    public void start(){
+        userInfoCheck.checkInfo();
+    }
 
     //Owner
     public void doActionOwner() {
@@ -68,8 +74,8 @@ public class Application {
         }
     }
 
-    public void delete() {
-        System.out.println("Please,enter the name:");
+    public void delete() throws WrongInputException {
+        System.out.println("Please,enter the username:");
         String name = scanner.next();
         if(ownerRepository.deleteUserByName(name)) System.out.println("Successfully deleted!");
         else System.err.println("Failed!");
@@ -207,4 +213,3 @@ public class Application {
         return a.matches("^[a-zA-Z]*$");
     }
 }
-/// Меня тут не может быть дохуя
